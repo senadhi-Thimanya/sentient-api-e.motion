@@ -3,9 +3,11 @@ from gradio_client import Client
 import os
 import base64
 from flask_cors import CORS
+from flask import Flask, render_template, request, jsonify
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='templates')
 CORS(app)
+
 
 
 HF_TOKEN = os.getenv("HF_TOKEN")
