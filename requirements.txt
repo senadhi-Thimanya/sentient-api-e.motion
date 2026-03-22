@@ -1,4 +1,4 @@
-flask
-flask-cors
+fastapi
+uvicorn
 gradio_client
 python-dotenv
