@@ -7,7 +7,8 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
-app.debug=False
+
+HF_TOKEN = os.getenv("HF_TOKEN")
 
 # --- 1. CONFIGURATION: YOUR HUGGING FACE SPACES ---
 SPACE_TEXT_EMO  = "E-motionAssistant/Space4"
@@ -30,25 +31,25 @@ def unified_ai_pipeline():
 
         # --- STEP 1: DETECT EMOTION ---
         if mode == "text":
-            client_emo = Client(SPACE_TEXT_EMO)
+            client_emo = Client(SPACE_TEXT_EMO, hf_token=HF_TOKEN)
             api_name = f"/predict"
             emotion_result = client_emo.predict(user_input, api_name=api_name)
         else:
-            client_emo = Client(SPACE_AUDIO_EMO)
+            client_emo = Client(SPACE_AUDIO_EMO, hf_token=HF_TOKEN)
             emotion_result = client_emo.predict(user_input, api_name="/predict")
 
         # Clean emotion result
         final_emotion = emotion_result if isinstance(emotion_result, str) else emotion_result.get('label', 'neutral')
         
         # --- STEP 2: GENERATE LLM RESPONSE ---
-        client_llm = Client(SPACE_LLM)
+        client_llm = Client(SPACE_LLM, hf_token=HF_TOKEN)
         client_llm.timeout = 360
 
         prompt = f"Language: {lang}. Detected Emotion: {final_emotion}. User said: {user_input}"
         llm_reply = client_llm.predict(prompt, api_name="/chat")
 
         # --- STEP 3: CONVERT TEXT TO SPEECH ---
-        client_tts = Client(SPACE_TTS)
+        client_tts = Client(SPACE_TTS, hf_token=HF_TOKEN)
         # TTS usually returns a local file path to a .wav or .mp3
         temp_audio_path = client_tts.predict(llm_reply, lang, api_name=f"/{lang}_tts")
 
