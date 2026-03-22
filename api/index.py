@@ -1,14 +1,13 @@
-from flask import Flask, render_template, request, jsonify
-from flask_cors import CORS 
-from gradio_client import Client
 import os
 import base64
+from flask import Flask, request, jsonify, render_template
+from flask_cors import CORS
+from gradio_client import Client
+from dotenv import load_dotenv
 
+load_dotenv()
 
-# The '..' tells Flask to look outside the 'api' folder for your HTML
-base_dir = os.path.dirname(os.path.abspath(__file__))
-template_dir = os.path.join(base_dir, '..', 'templates')
-app = Flask(__name__, template_folder='../templates', static_folder='../static')
+app = Flask(__name__, template_folder='../templates')
 CORS(app)
 
 
