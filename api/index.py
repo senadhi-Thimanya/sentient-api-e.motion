@@ -49,6 +49,19 @@ class SignupRequest(BaseModel):
 
 # ── HEALTH CHECK ─────────────────────────────────────────────────────────────
 
+@app.get("/")
+def root():
+    return {
+        "message": "Emotion Assistant API",
+        "status": "running",
+        "endpoints": {
+            "health": "/api/python",
+            "predict": "/api/python/predict",
+            "signup": "/auth/signup",
+            "login": "/auth/login"
+        }
+    }
+
 @app.get("/api/python")
 def health_check():
     return {"status": "FastAPI server is running"}
