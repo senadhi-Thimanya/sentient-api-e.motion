@@ -6,6 +6,8 @@ from flask_cors import CORS
 from flask import Flask, render_template, request, jsonify
 
 # The '..' tells Flask to look outside the 'api' folder for your HTML
+base_dir = os.path.dirname(os.path.abspath(__file__))
+template_dir = os.path.join(base_dir, '..', 'templates')
 app = Flask(__name__, template_folder='../templates')
 CORS(app)
 
