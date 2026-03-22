@@ -1,3 +1,5 @@
 fastapi
 gradio_client
 uvicorn
+flask
+gradio_client
